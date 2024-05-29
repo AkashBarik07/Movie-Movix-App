@@ -11,27 +11,24 @@ import Genres from "../../../components/genres/Genres";
 import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
 import PosterFallback from "../../../assets/no-poster.png";
-import { PlayIcon } from "../Playbtn.jsx";
-import VideoPopup from "../../../components/videoPopup/VideoPopup.jsx";
-
-
-
-
+import { PlayIcon } from "../Playbtn";
+import VideoPopup from "../../../components/videoPopup/VideoPopup";
 
 const DetailsBanner = ({ video, crew }) => {
-    const [show, setShow] = useState(false);
-    const [videoId, setVideoId] = useState(null);
+  const [show, setShow] = useState(false);
+  const [videoId, setVideoId] = useState(null);
 
   const { mediaType, id } = useParams();
   const { data, loading } = useFetch(`/${mediaType}/${id}`);
 
   const { url } = useSelector((state) => state.home);
+
   const _genres = data?.genres?.map((g) => g.id);
 
-
   const director = crew?.filter((f) => f.job === "Director");
-  const writer = crew?.filter((f) => f.job === "Screenplay" || f.job === "Story" || f.job === "Writer");
-  
+  const writer = crew?.filter(
+    (f) => f.job === "Screenplay" || f.job === "Story" || f.job === "Writer"
+  );
 
   const toHoursAndMinutes = (totalMinutes) => {
     const hours = Math.floor(totalMinutes / 60);
@@ -46,7 +43,7 @@ const DetailsBanner = ({ video, crew }) => {
           {!!data && (
             <React.Fragment>
               <div className="backdrop-img">
-                <Img src={url.backdrop + data?.backdrop_path} />
+                <Img src={url.backdrop + data.backdrop_path} />
               </div>
               <div className="opacity-layer"></div>
               <ContentWrapper>
@@ -73,13 +70,13 @@ const DetailsBanner = ({ video, crew }) => {
 
                     <div className="row">
                       <CircleRating rating={data.vote_average.toFixed(1)} />
-
-                        <div className="playbtn" 
-                            onClick={() => {
-                                setShow(true)
-                                setVideoId(video.key)
-                            }}
-                        >
+                      <div
+                        className="playbtn"
+                        onClick={() => {
+                          setShow(true);
+                          setVideoId(video.key);
+                        }}
+                      >
                         <PlayIcon />
                         <span className="text">Watch Trailer</span>
                       </div>
@@ -87,7 +84,7 @@ const DetailsBanner = ({ video, crew }) => {
 
                     <div className="overview">
                       <div className="heading">Overview</div>
-                      <div className="description">{data.overvie}</div>
+                      <div className="description">{data.overview}</div>
                     </div>
 
                     <div className="info">
@@ -105,7 +102,6 @@ const DetailsBanner = ({ video, crew }) => {
                           </span>
                         </div>
                       )}
-
                       {data.runtime && (
                         <div className="infoItem">
                           <span className="text bold">Runtime: </span>
@@ -143,7 +139,8 @@ const DetailsBanner = ({ video, crew }) => {
                         </span>
                       </div>
                     )}
-                    {data.created_by?.length > 0 && (
+
+                    {data?.created_by?.length > 0 && (
                       <div className="info">
                         <span className="text bold">Creator: </span>
                         <span className="text">
@@ -159,10 +156,10 @@ const DetailsBanner = ({ video, crew }) => {
                   </div>
                 </div>
                 <VideoPopup
-                    show={show}
-                    setShow={setShow}
-                    videoId={videoId}
-                    setVideoId={setVideoId}
+                  show={show}
+                  setShow={setShow}
+                  videoId={videoId}
+                  setVideoId={setVideoId}
                 />
               </ContentWrapper>
             </React.Fragment>
